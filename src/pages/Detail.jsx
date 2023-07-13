@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { styled } from "styled-components";
 import Comments from "../components/Comments";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Link, useParams } from "react-router-dom";
@@ -66,43 +67,102 @@ const Detail = () => {
 
   return (
     <>
-      <Link to="/list">
-        <div>↩️</div>
-      </Link>
-      <div>
-        <div>
-          <button onClick={deleteButtonHandler}>삭제</button>
-          <button onClick={() => editButtonHandler(playlist?.password)}>
-            {edit ? "저장" : "수정"}
-          </button>
-        </div>
-        {edit ? (
+      <LayOut>
+        <FormContainer>
           <div>
-            <div>
-              <input
-                value={editedTitle}
-                onChange={onChangeEditedTitleHandler}
-              />
-            </div>
-            <div>
-              <input value={editedName} onChange={onChangeEditedNameHandler} />
-            </div>
-            <textarea
-              value={editedContents}
-              onChange={onChangeEditedContentsHandler}
-            />
+            <ButtonConainer>
+              <div>
+                <Link to="/list">
+                  <div>🔙</div>
+                </Link>
+              </div>
+              <div>
+                <StButton onClick={deleteButtonHandler}>❌</StButton>
+                <StButton onClick={() => editButtonHandler(playlist?.password)}>
+                  {edit ? "✔️" : "✏️"}
+                </StButton>
+              </div>
+            </ButtonConainer>
+            {edit ? (
+              <ContentBox>
+                <div>
+                  <input
+                    value={editedTitle}
+                    onChange={onChangeEditedTitleHandler}
+                  />
+                </div>
+                {/* <div>
+                  <input
+                    value={editedName}
+                    onChange={onChangeEditedNameHandler}
+                  />
+                </div> */}
+                <textarea
+                  value={editedContents}
+                  onChange={onChangeEditedContentsHandler}
+                />
+              </ContentBox>
+            ) : (
+              <ContentBox>
+                <div style={{ marginBottom: "10px", fontSize: "20px" }}>
+                  📀&nbsp;{playlist?.title}
+                </div>
+                {/* <div style={{ marginBottom: "5px" }}>{playlist?.name}</div> */}
+                <div style={{ marginLeft: "30px" }}>{playlist?.contents}</div>
+              </ContentBox>
+            )}
           </div>
-        ) : (
-          <div>
-            <div>📀{playlist?.title}</div>
-            <div>{playlist?.name}</div>
-            <div>{playlist?.contents}</div>
-          </div>
-        )}
-      </div>
+        </FormContainer>
+      </LayOut>
       <Comments />
     </>
   );
 };
 
 export default Detail;
+
+const LayOut = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FormContainer = styled.div`
+  width: 800px;
+  height: 200px;
+  padding-bottom: 20px;
+  background-color: #06014d;
+  border-radius: 10px;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const ButtonConainer = styled.div`
+  width: 750px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+`;
+
+const StButton = styled.button`
+  background-color: transparent;
+  border: none;
+`;
+
+const ContentBox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 660px;
+  height: 120px;
+  /* background-color: #fff; */
+  margin: 10px 30px 30px 30px;
+  padding-left: 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #fff;
+  border: 2px solid #fff;
+`;
